@@ -1,70 +1,81 @@
 # TerraWish Backend
 
-## Setup
-back/app/
-├── config/             # Configuración y Conexión a Base de Datos
-│   └── database.py     # postgresql
-├── models/             # Lógica de Negocio y Datos
-│   ├── sql_models.py   # Modelos SQLAlchemy (Tablas BD)
-│   ├── crud.py         # Operaciones de Datos (Service Layer)
-│   └── ml_engine.py    # Motor de Inteligencia Artificial
-├── views/              # Representación de Datos
-│   └── schemas.py      # Esquemas Pydantic (DTOs / View Models)
-├── controllers/        # Controladores (Endpoints/Rutas)
-│   ├── system_controller.py # /health, /
-│   ├── soil_controller.py   # /analyze
-│   └── crop_controller.py   # /crops, /crops/details
-└── main.py             # Punto de entrada y configuración de rutas
-1. **Install Dependencies**:
+## Configuración
+Estructura del proyecto:
+
+back/app/<br>
+├── config/                              <br>
+│   └── database.py                      <br>
+├── models/                              <br>
+│   ├── sql_models.py                    <br>
+│   ├── crud.py                          <br>
+│   └── ml_engine.py                     <br>
+├── views/                               <br>
+│   └── schemas.py                       <br>
+├── controllers/                         <br>
+│   ├── system_controller.py             <br>
+│   ├── soil_controller.py               <br>
+│   └── crop_controller.py               <br>
+└── main.py                              <br>
+
+
+
+## 1. **Instalar Dependencias**:
+   Para instalar las dependencias necesarias, ejecuta:
    ```bash
    pip install -r requirements.txt
-   ```
+2. Configuración de la Base de Datos:
+Asegúrate de tener PostgreSQL instalado y en funcionamiento.
 
-2. **Database Setup**:
-   - Ensure you have PostgreSQL installed and running.
-   - Create a database (e.g., `terrawish`).
-   - Copy `.env.example` to `.env` and update the `DATABASE_URL` with your credentials.
-   ```bash
-   cp .env.example .env
-   # Edit .env
-   ```
-   - Run the seed script to create tables and populate initial data:
-   ```bash
-   python seed.py
-   ```
+Crea una base de datos (por ejemplo, terrawish).
 
-3. **Train the Model**:
-   - Before running the API, you must train the model using your dataset.
-   - Run the training script:
-   ```bash
-   python train.py
-   ```
-   - This will save the model to `model_data/best_model.h5` and class names to `model_data/classes.txt`.
+Copia el archivo .env.example a .env y actualiza el DATABASE_URL con tus credenciales.
 
-4. **Run the API**:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+bash
+Copiar código
+cp .env.example .env
+# Edita el archivo .env con tus credenciales
+Ejecuta el script de seed para crear las tablas y poblar los datos iniciales:
 
-## API Endpoints
+bash
+Copiar código
+python seed.py
+3. Entrenar el Modelo:
+Antes de ejecutar la API, debes entrenar el modelo utilizando tu conjunto de datos.
 
-- **POST /predict/**: Upload an image to get soil classification and crop recommendations.
-- **GET /docs**: Interactive API documentation (Swagger UI).
+Ejecuta el script de entrenamiento:
 
-## Docker Setup
+bash
+Copiar código
+python train.py
+Esto guardará el modelo entrenado en model_data/best_model.h5 y los nombres de las clases en model_data/classes.txt.
 
-1. **Build and Run**:
-   ```bash
-   docker-compose up --build
-   ```
+4. Ejecutar la API:
+Para iniciar la API, ejecuta el siguiente comando:
 
-2. **Initialize Data** (Once container is running):
-   - Open a separate terminal:
-   ```bash
-   # Seed Database
-   docker-compose exec backend python seed.py
-   
-   # Train Model (Required for prediction)
-   # Note: This might take time inside the container
-   docker-compose exec backend python train.py
-   ```
+bash
+Copiar código
+uvicorn app.main:app --reload
+Endpoints de la API
+POST /predict/: Subir una imagen para obtener la clasificación del suelo y recomendaciones de cultivos.
+
+GET /docs: Documentación interactiva de la API (Swagger UI).
+
+Configuración con Docker
+1. Construir y Ejecutar el Contenedor:
+Para construir y ejecutar el contenedor, usa:
+
+bash
+Copiar código
+docker-compose up --build
+2. Inicializar los Datos (Una vez que el contenedor esté en funcionamiento):
+Abre una terminal separada:
+
+bash
+Copiar código
+# Sembrar la base de datos
+docker-compose exec backend python seed.py
+
+# Entrenar el modelo (Requerido para las predicciones)
+# Nota: Este proceso puede tardar un poco dentro del contenedor
+docker-compose exec backend python train.py
